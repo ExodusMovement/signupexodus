@@ -1,5 +1,6 @@
 //
 // Created by Hongbo Tang on 2018/7/5.
+// Modified by Ferenc Kiraly on 2018/10/15
 //
 
 #include "signupexodus.hpp"
@@ -29,6 +30,9 @@ void signupexodus::transfer(account_name from, account_name to, asset quantity, 
     eosio_assert(account_name_str.length() == 12, "Length of account name should be 12");
     account_name new_account_name = string_to_name(account_name_str.c_str());
 
+    // Verify that the account does not exists
+    eosio_assert(!is_account(new_account_name), "Account already exists");
+
     string public_key_str = memo.substr(separator_pos + 1);
     eosio_assert(public_key_str.length() == 53, "Length of public key should be 53");
 
@@ -52,21 +56,11 @@ void signupexodus::transfer(account_name from, account_name to, asset quantity, 
     const int64_t cpu_stake = 9800*2; // Amount to stake for CPU [1/10 mEOS]
     const uint32_t bytes = 4096;      // Number of bytes of RAM to buy
     const double ram_fee = 0.005;     // Fee for buying RAM [percent]
+    const int64_t max_ram_cost = 20000; // Maximum RAM cost
 
-    // https://github.com/Dappub/signupeoseos
-    // https://eosio.stackexchange.com/questions/847/how-to-get-current-last-ram-price
-    // https://eosio.stackexchange.com/questions/20/how-to-read-tables-from-other-smart-contracts
-    auto _rammarket = rammarket(N(eosio), N(eosio));
-    auto itr = _rammarket.find(S(4, RAMCORE));
-    auto tmp = *itr;
-    // Not sure how reliable this formula for calculating RAM price is. It reproduces the actual price
-    // on testnet up to four decimal places. However it is not the actual algorhythm as implemented
-    // in "contacts/eosio.system/exchange_state.cpp"
-    double ramPrice = 1.0*tmp.quote.balance.amount/tmp.base.balance.amount;
-    //print("Ram Price: ", ramPrice);
+    asset buy_ram = buyrambytes(4*1024);
+    eosio_assert(buy_ram.amount <= max_ram_cost, "RAM currently too expensive, try again later");
 
-    // Buy RAM and take into account a 0.5% fee for buying RAM.
-    asset buy_ram(ceil(ramPrice*bytes*(1.0 + ram_fee)), CORE_SYMBOL);
     asset stake_net(net_stake, CORE_SYMBOL);
     asset stake_cpu(cpu_stake, CORE_SYMBOL);
     asset liquid = quantity - stake_net - stake_cpu - buy_ram;

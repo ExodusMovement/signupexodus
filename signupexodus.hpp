@@ -10,9 +10,11 @@
 #include <eosiolib/crypto.h>
 #include <eosiolib/print.hpp>
 #include <eosiolib/multi_index.hpp>
-#include <eosio.system/exchange_state.hpp>
 #include <cstring>
 #include <cmath>
+
+#include "ram/exchange_state.cpp"
+#include "utils/buyrambytes.hpp"
 
 using namespace eosio;
 using namespace std;

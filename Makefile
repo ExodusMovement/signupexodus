@@ -12,7 +12,7 @@ wast: wasm
 	eosio-wasm2wast -o signupexodus.wast signupexodus.wasm
 
 wasm:
-	eosio-cpp -o signupexodus.wasm signupexodus.cpp -I ../eos/contracts --abigen
+	eosio-cpp -o signupexodus.wasm signupexodus.cpp --abigen
 
 deploy: wast wasm
 	cleos set contract signupexodus ../signupexodus
