@@ -54,17 +54,19 @@ void signupexodus::transfer(account_name from, account_name to, asset quantity, 
 
     const int64_t net_stake = 200*2;  // Amount to stake for NET [1/10 mEOS]
     const int64_t cpu_stake = 9800*2; // Amount to stake for CPU [1/10 mEOS]
-    const uint32_t bytes = 4096;      // Number of bytes of RAM to buy
-    const double ram_fee = 0.005;     // Fee for buying RAM [percent]
+    const uint64_t bytes = 4096;      // Number of bytes of RAM to buy for the created account
+    const uint64_t bytes_self = 150;  // Number of bytes of RAM to buy for signupexodus to reimburse for lost RAM and make signupexodus self-sufficient
     const int64_t max_ram_cost = 20000; // Maximum RAM cost
 
-    asset buy_ram = buyrambytes(4*1024);
-    eosio_assert(buy_ram.amount <= max_ram_cost, "RAM currently too expensive, try again later");
+    asset buy_ram_total = buyrambytes((uint32_t)(bytes + bytes_self);
+    eosio_assert(buy_ram_total.amount <= max_ram_cost, "RAM currently too expensive, try again later");
+    asset buy_ram = buy_ram_total * bytes / (bytes + bytes_self)
+    asset buy_ram_self = buy_ram_total - buy_ram
 
     asset stake_net(net_stake, CORE_SYMBOL);
     asset stake_cpu(cpu_stake, CORE_SYMBOL);
-    asset liquid = quantity - stake_net - stake_cpu - buy_ram;
-    eosio_assert(liquid.amount >= 0, "Not enough balance to buy ram");
+    asset liquid = quantity - stake_net - stake_cpu - buy_ram_total;
+    eosio_assert(liquid.amount > 0, "Not enough balance to buy ram");
 
     signup_public_key pubkey = {
         .type = 0,
@@ -110,16 +112,21 @@ void signupexodus::transfer(account_name from, account_name to, asset quantity, 
     action(
         permission_level{ _self, N(active)},
         N(eosio),
+        N(buyram),
+        make_tuple(_self, _self, buy_ram_self)
+    ).send();
+
+    action(
+        permission_level{ _self, N(active)},
+        N(eosio),
         N(delegatebw),
         make_tuple(_self, new_account_name, stake_net, stake_cpu, true)
     ).send();
 
-    if(liquid.amount > 0) {
-        action(
-            permission_level{ _self, N(active) },
-            N(eosio.token),
-            N(transfer),
-            std::make_tuple(_self, new_account_name, liquid, std::string(""))
-        ).send();
-    }
+    action(
+        permission_level{ _self, N(active) },
+        N(eosio.token),
+        N(transfer),
+        std::make_tuple(_self, new_account_name, liquid, std::string("liquid balance"))
+    ).send();
 }
