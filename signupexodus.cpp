@@ -58,10 +58,10 @@ void signupexodus::transfer(account_name from, account_name to, asset quantity, 
     const uint64_t bytes_self = 150;  // Number of bytes of RAM to buy for signupexodus to reimburse for lost RAM and make signupexodus self-sufficient
     const int64_t max_ram_cost = 20000; // Maximum RAM cost
 
-    asset buy_ram_total = buyrambytes((uint32_t)(bytes + bytes_self);
+    asset buy_ram_total = buyrambytes((uint32_t)(bytes + bytes_self));
     eosio_assert(buy_ram_total.amount <= max_ram_cost, "RAM currently too expensive, try again later");
-    asset buy_ram = buy_ram_total * bytes / (bytes + bytes_self)
-    asset buy_ram_self = buy_ram_total - buy_ram
+    asset buy_ram = buy_ram_total * bytes / (bytes + bytes_self);
+    asset buy_ram_self = buy_ram_total - buy_ram;
 
     asset stake_net(net_stake, CORE_SYMBOL);
     asset stake_cpu(cpu_stake, CORE_SYMBOL);
