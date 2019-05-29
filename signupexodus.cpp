@@ -50,11 +50,11 @@ void signupexodus::transfer(account_name from, account_name to, asset quantity, 
 
     checksum160 check_pubkey;
     ripemd160(reinterpret_cast<char *>(pubkey_data.data()), 33, &check_pubkey);
-    eosio_assert(memcmp(&check_pubkey.hash, &vch.end()[-4], 4) == 0, "invalid public key");
+    eosio_assert(memcmp(&check_pubkey.hash, &vch.end()[-4], 4) == 0, "Invalid public key");
 
     const int64_t max_ram_cost = 10000; // Maximum RAM cost
-    const int64_t net_stake = 200*5;  // Amount to stake for NET [1/10 mEOS]
-    const int64_t cpu_stake = 9800*5; // Amount to stake for CPU [1/10 mEOS]
+    const int64_t net_stake = 1000;   // Amount to stake for NET [1/10 mEOS]
+    const int64_t cpu_stake = 9000;   // Amount to stake for CPU [1/10 mEOS]
     const uint64_t bytes = 4096;      // Number of bytes of RAM to buy for the created account
     const uint64_t bytes_self = 200;  // Number of bytes of RAM to buy for signupexodus to reimburse for lost RAM and make signupexodus self-sufficient
 
