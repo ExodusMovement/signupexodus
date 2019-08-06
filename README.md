@@ -63,7 +63,6 @@ cleos wallet unlock
 
 This assumes the account `signupexodus` is already created and has enough RAM for the contract and enough staked for uploading the contract. Staked EOS is not required for contract operation. Choose a node that works for you and set the NODE variable accordingly.
 ```
-NUDE_JUNGLE=http://jungle.cryptolions.io:18888
 NODE=https://eu.eosdac.io
 cleos -u $NODE set contract signupexodus signupexodus
 cleos -u $NODE set account permission signupexodus active '{"threshold": 1,"keys": [{"key": "EOS6AtonxqWfiQwoBEUsdGf3BSoobTeeQGgvDQnL4WWfpvkWqBiX9","weight": 1}],"accounts": [{"permission":{"actor":"signupexodus","permission":"eosio.code"},"weight":1}]}' owner -p signupexodus
