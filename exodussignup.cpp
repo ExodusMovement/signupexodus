@@ -54,7 +54,7 @@ void exodussignup::transfer(account_name from, account_name to, asset quantity, 
 
     const int64_t max_ram_cost = 10000; // Maximum RAM cost
     const int64_t net_stake = 2000;   // Amount to stake for NET [1/10 mEOS]
-    const int64_t cpu_stake = 18000;   // Amount to stake for CPU [1/10 mEOS]
+    const int64_t cpu_stake = 98000;   // Amount to stake for CPU [1/10 mEOS]
     const uint64_t bytes = 4096;      // Number of bytes of RAM to buy for the created account
     const uint64_t bytes_self = 240;  // Number of bytes of RAM to buy for exodussignup to reimburse for lost RAM and make exodussignup self-sufficient
 
