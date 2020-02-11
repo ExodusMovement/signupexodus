@@ -1,6 +1,6 @@
 # signupexodus
 
-Smart contract for creating EOS accounts for users of Exodus. EOS can be sent to this contract with a memo formatted as `<account_name>-<publick_key>`, and the account `account_name` will be created and permissions for controlling the account will be assgined to `public_key`. For the account approximately 4k of RAM will be purchaed and 2.0 EOS weill be staked. The remaining EOS will be sent to the created account for immediate use.
+Smart contract for creating EOS accounts for users of Exodus. EOS can be sent to this contract with a memo formatted as `<account_name>-<publick_key>`, and the account `account_name` will be created and permissions for controlling the account will be assgined to `public_key`. For the account approximately 4k of RAM will be purchaed and 2.0 EOS will be staked. The remaining EOS will be sent to the created account for immediate use.
 
 ### Set Up Environment
 
